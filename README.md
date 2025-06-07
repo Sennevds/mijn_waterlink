@@ -15,14 +15,14 @@ Copy waterlink_meter folder to your configuration/custom_components path and res
 
 |Configuration | Description  |
 |--|--|
-| Username | The username that you use to login into My Wate Link  |
-| Password| The password that you use to login into My Water Link  |
-| Client ID| not sure if this needs to be configurable. If the present client ID does not work for you, you may have to inspect your own network traffic to My Water Link  |
-| Meter ID| your 6-digit meter identification number (eg. 123456) You can find this ID in the URL eg https://portaaldigitalemeters.water-link.be/water-meter/XXXXXX|
+| Username | The username that you use to login into My Water Link portal |
+| Password| The password that you use to login into My Water Link portal  |
+| Client ID| I'm not even sure if this needs to be configurable. If the present client ID does not work for you, you may have to inspect your own network traffic to My Water Link |
+| Meter ID| your 6-digit meter identification number (eg. 123456) You can find this ID in your specific portal URL, eg. https://portaaldigitalemeters.water-link.be/water-meter/XXXXXX|
 
 # Configuration
 ![image](https://github.com/user-attachments/assets/fc7ea38c-a0f1-4078-a95b-51a523d71dba)
 
 |Option| Description  |
 |--|--|
-| update_interval | The interval to update. Set two 2700s (2 hours). As my reading is only updated once a day, this should be sufficient |
+| update_interval | The interval to fetch the reading from the Portal. Default is set two 2700s (2 hours). Note that the digital water meter only sends updates once day.  |
