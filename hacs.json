@@ -1,1 +1,7 @@
-{"name": "Waterlink Meter", "content_in_root": False, "domains": ["sensor"], "homeassistant": "2023.0.0", "render_readme": True}
+{
+  "name": "Waterlink Meter",
+  "content_in_root": false,
+  "domains": ["sensor"],
+  "homeassistant": "2023.0.0",
+  "render_readme": true
+}
