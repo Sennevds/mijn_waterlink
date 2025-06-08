@@ -1,0 +1,11 @@
+{
+  "domain": "waterlink_meter",
+  "name": "water-link meter",
+  "version": "1.0.0",
+  "documentation": "https://github.com/zheffie/waterlink_meter",
+  "dependencies": [],
+  "codeowners": ["@zheffie"],
+  "iot_class": "cloud_polling",
+  "config_flow": true,
+  "requirements": ["requests"]
+}
