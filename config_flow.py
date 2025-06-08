@@ -1,49 +1,67 @@
-import voluptuous as vol
-from homeassistant import config_entries
-from homeassistant.core import callback
+from homeassistant.components.sensor import SensorEntity
+from homeassistant.helpers.update_coordinator import CoordinatorEntity, DataUpdateCoordinator
+from datetime import timedelta
+from .waterlink_api import WaterlinkClient
 from .const import DOMAIN
+import logging
 
-class WaterlinkConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    VERSION = 1
+_LOGGER = logging.getLogger(__name__)
 
-    async def async_step_user(self, user_input=None):
-        errors = {}
+async def async_setup_entry(hass, config_entry, async_add_entities):
+    username = config_entry.data["username"]
+    password = config_entry.data["password"]
+    client_id = config_entry.data["client_id"]
+    meter_id = config_entry.data["meter_id"]
+    update_interval = config_entry.options.get("update_interval", 7200)  # default 2 hours
 
-        if user_input is not None:
-            return self.async_create_entry(title="Waterlink Meter", data=user_input)
+    client = WaterlinkClient(username, password, client_id, meter_id)
 
-        data_schema = vol.Schema({
-            vol.Required("username"): str,
-            vol.Required("password"): str,
-            vol.Required("client_id", default="07967700-64cf-4f26-825c-b13042574400"): str,
-            vol.Required("meter_id"): str,
-        })
+    async def async_update_data():
+        _LOGGER.debug("Authenticating and fetching data from Waterlink...")
+        await hass.async_add_executor_job(client.authenticate)
+        return await hass.async_add_executor_job(client.get_meter_data)
 
-        return self.async_show_form(
-            step_id="user",
-            data_schema=data_schema,
-            errors=errors
-        )
+    coordinator = DataUpdateCoordinator(
+        hass,
+        _LOGGER,
+        name="Waterlink Meter",
+        update_method=async_update_data,
+        update_interval=timedelta(seconds=update_interval),
+    )
 
-    @staticmethod
-    @callback
-    def async_get_options_flow(config_entry):
-        return WaterlinkOptionsFlowHandler(config_entry)
+    await coordinator.async_config_entry_first_refresh()
 
-class WaterlinkOptionsFlowHandler(config_entries.OptionsFlow):
-    def __init__(self, config_entry):
-        self.config_entry = config_entry
+    reading = coordinator.data.get("meterReading")
+    value = float(reading.replace(',', '.')) if reading else None
 
-    async def async_step_init(self, user_input=None):
-        if user_input is not None:
-            return self.async_create_entry(title="", data=user_input)
+    entity = WaterlinkSensor(
+        coordinator,
+        name="Waterlink Meter Reading",
+        state=value,
+        unit="m³",
+        attributes={
+            "is_active": coordinator.data.get("isActive"),
+            "latest_reading_date": coordinator.data.get("latestMeterReading"),
+            "has_flow_limitation": coordinator.data.get("hasFlowLimitation"),
+            "is_up_to_date": coordinator.data.get("isUpToDate"),
+            "address": coordinator.data.get("address"),
+            "divergent_consumption": coordinator.data.get("divergentConsumption"),
+            "days_offset": coordinator.data.get("daysOffset"),
+            "no_data_permission": coordinator.data.get("noDataPermission")
+        }
+    )
 
-        options_schema = vol.Schema({
-            vol.Optional("update_interval", default=self.config_entry.options.get("update_interval", 7200)): int,
-        })
+    async_add_entities([entity])
 
-        return self.async_show_form(
-            step_id="init",
-            data_schema=options_schema
-        )
+class WaterlinkSensor(CoordinatorEntity, SensorEntity):
+    def __init__(self, coordinator, name, state, unit, attributes):
+        super().__init__(coordinator)
+        self._attr_name = name
+        self._state = state
+        self._attr_native_unit_of_measurement = unit
+        self._attr_extra_state_attributes = attributes
+        self._attr_unique_id = f"waterlink_{name.replace(' ', '_').lower()}"
 
+    @property
+    def state(self):
+        return self._state
