@@ -26,6 +26,7 @@ class WaterlinkClient:
     def authenticate(self):
         verifier, challenge = self._generate_pkce()
         redirect = "https://portaaldigitalemeters.water-link.be"
+        self.session = requests.Session()
         self.session.get(redirect)
         state = secrets.token_hex(16)
 
@@ -76,8 +77,12 @@ class WaterlinkClient:
             "utf8": "✓"
         }, headers=headers, allow_redirects=False)
 
+        _LOGGER.debug(f"Login POST status: {post_resp.status_code}")
+        _LOGGER.debug(f"Login POST headers: {post_resp.headers}")
+
         location = post_resp.headers.get("Location")
         if not location:
+            _LOGGER.debug(post_resp.text)  # useful to see error page
             raise ValueError("No redirect location with authorization code")
         match = re.search(r"code=([^&]+)", location)
         if not match:

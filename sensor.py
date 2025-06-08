@@ -4,6 +4,12 @@ from datetime import timedelta
 from .waterlink_api import WaterlinkClient
 from .const import DOMAIN
 import logging
+from homeassistant.components.sensor import (
+    SensorEntity,
+    SensorEntityDescription,
+    SensorDeviceClass,
+    SensorStateClass,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -12,7 +18,11 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     password = config_entry.data["password"]
     client_id = config_entry.data["client_id"]
     meter_id = config_entry.data["meter_id"]
-    update_interval = config_entry.options.get("update_interval", 7200)  # default 2 hours
+
+    update_interval = config_entry.options.get(
+        "update_interval",
+        config_entry.data.get("update_interval", 7200)
+    )
 
     client = WaterlinkClient(username, password, client_id, meter_id)
 
@@ -24,7 +34,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     coordinator = DataUpdateCoordinator(
         hass,
         _LOGGER,
-        name="Waterlink Meter",
+        name=f"water-link meter {meter_id}",
         update_method=async_update_data,
         update_interval=timedelta(seconds=update_interval),
     )
@@ -36,7 +46,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 
     entity = WaterlinkSensor(
         coordinator,
-        name="Waterlink Meter Reading",
+        name=f"water-link meter {meter_id}",
         state=value,
         unit="m³",
         attributes={
@@ -60,7 +70,9 @@ class WaterlinkSensor(CoordinatorEntity, SensorEntity):
         self._state = state
         self._attr_native_unit_of_measurement = unit
         self._attr_extra_state_attributes = attributes
-        self._attr_unique_id = f"waterlink_{name.replace(' ', '_').lower()}"
+        self._attr_unique_id = f"{name.replace(' ', '_').lower()}"
+        self._attr_device_class = SensorDeviceClass.WATER
+        self._attr_state_class = SensorStateClass.TOTAL_INCREASING
 
     @property
     def state(self):

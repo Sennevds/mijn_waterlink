@@ -1,67 +1,48 @@
-from homeassistant.components.sensor import SensorEntity
-from homeassistant.helpers.update_coordinator import CoordinatorEntity, DataUpdateCoordinator
-from datetime import timedelta
-from .waterlink_api import WaterlinkClient
+import voluptuous as vol
+from homeassistant.config_entries import OptionsFlowWithConfigEntry
+from homeassistant import config_entries
+from homeassistant.core import callback
 from .const import DOMAIN
-import logging
 
-_LOGGER = logging.getLogger(__name__)
+class WaterlinkConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+    VERSION = 1
 
-async def async_setup_entry(hass, config_entry, async_add_entities):
-    username = config_entry.data["username"]
-    password = config_entry.data["password"]
-    client_id = config_entry.data["client_id"]
-    meter_id = config_entry.data["meter_id"]
-    update_interval = config_entry.options.get("update_interval", 7200)  # default 2 hours
+    async def async_step_user(self, user_input=None):
+        errors = {}
 
-    client = WaterlinkClient(username, password, client_id, meter_id)
+        if user_input is not None:
+            return self.async_create_entry(title=f"water-link meter {user_input['meter_id']}", data=user_input)
 
-    async def async_update_data():
-        _LOGGER.debug("Authenticating and fetching data from Waterlink...")
-        await hass.async_add_executor_job(client.authenticate)
-        return await hass.async_add_executor_job(client.get_meter_data)
+        data_schema = vol.Schema({
+            vol.Required("username"): str,
+            vol.Required("password"): str,
+            vol.Required("client_id", default="07967700-64cf-4f26-825c-b13042574400"): str,
+            vol.Required("meter_id"): str,
+        })
 
-    coordinator = DataUpdateCoordinator(
-        hass,
-        _LOGGER,
-        name="Waterlink Meter",
-        update_method=async_update_data,
-        update_interval=timedelta(seconds=update_interval),
-    )
+        return self.async_show_form(
+            step_id="user",
+            data_schema=data_schema,
+            errors=errors
+        )
 
-    await coordinator.async_config_entry_first_refresh()
+    @staticmethod
+    @callback
+    def async_get_options_flow(config_entry):
+        return WaterlinkOptionsFlowHandler(config_entry)
 
-    reading = coordinator.data.get("meterReading")
-    value = float(reading.replace(',', '.')) if reading else None
 
-    entity = WaterlinkSensor(
-        coordinator,
-        name="Waterlink Meter Reading",
-        state=value,
-        unit="m³",
-        attributes={
-            "is_active": coordinator.data.get("isActive"),
-            "latest_reading_date": coordinator.data.get("latestMeterReading"),
-            "has_flow_limitation": coordinator.data.get("hasFlowLimitation"),
-            "is_up_to_date": coordinator.data.get("isUpToDate"),
-            "address": coordinator.data.get("address"),
-            "divergent_consumption": coordinator.data.get("divergentConsumption"),
-            "days_offset": coordinator.data.get("daysOffset"),
-            "no_data_permission": coordinator.data.get("noDataPermission")
-        }
-    )
+class WaterlinkOptionsFlowHandler(OptionsFlowWithConfigEntry):
+    async def async_step_init(self, user_input=None):
+        if user_input is not None:
+            return self.async_create_entry(title="", data=user_input)
 
-    async_add_entities([entity])
+        update_interval = self.options.get("update_interval", 7200)
 
-class WaterlinkSensor(CoordinatorEntity, SensorEntity):
-    def __init__(self, coordinator, name, state, unit, attributes):
-        super().__init__(coordinator)
-        self._attr_name = name
-        self._state = state
-        self._attr_native_unit_of_measurement = unit
-        self._attr_extra_state_attributes = attributes
-        self._attr_unique_id = f"waterlink_{name.replace(' ', '_').lower()}"
+        return self.async_show_form(
+            step_id="init",
+            data_schema=vol.Schema({
+                vol.Optional("update_interval", default=update_interval): int
+            })
+        )
 
-    @property
-    def state(self):
-        return self._state
