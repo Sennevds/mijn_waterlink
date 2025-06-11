@@ -1,1 +1,1 @@
-DOMAIN = "waterlink_meter"
+DOMAIN = "mijnwater-link"
