@@ -1,4 +1,4 @@
-# Water-Link Home Assistant custom integration
+# Mijn Water-Link Home Assistant custom integration
 
 ![image](https://github.com/user-attachments/assets/69820796-f96d-44e2-b0c4-0dbd94a06e34)
 
@@ -11,7 +11,7 @@ Water-Link is only available in Belgium, so no point in using this integration i
 
 # Installation
 Currently this integration is not yet available over HACS, so you will have to manually add it to your Home Assistant instance.
-Copy the `waterlink_meter` folder to your `configuration/custom_components` path and restart Home Assistant. Use the add integration UI to set up your device.
+Copy the `custom_components/mijn-waterlink` folder to your `configuration` path and restart Home Assistant. Use the add integration UI to set up your device.
 
 ![image](https://github.com/user-attachments/assets/025b78f2-60b3-4431-8ca5-5c1f484ae6e4)
 
