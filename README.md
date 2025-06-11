@@ -4,7 +4,7 @@
 
 I was running a bash script to fetch my 'Water-Link' digital water meter readings, and decided to leverage ChatGPT to convert it into a custom integration. It did a decent job, although i'm sure there could be many improvements (both to the original bash scripts, as to the genereated custom integration). Feel free to contribute.
 As Water Link does not expose a proper API, the integration authenticates on ['My Water-Link' customer portal](https://portaaldigitalemeters.water-link.be/), and retrieves the data from there. Note that this may not be very robust, as Water-Link has changed their authentication procedures already a few times. Use this integration at your own discretion.
-Water-Link is only available in Belgium, so no point in using this integration if you are not a current customer.
+Water-Link is only available in Belgium, so no point in using this integration if you are not an existing customer.
 
 # Available Data
 ![image](https://github.com/user-attachments/assets/02f5c7e7-fa33-4fd5-8f06-baad1bc149ec)
