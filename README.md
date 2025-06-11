@@ -2,6 +2,8 @@
 
 ![image](https://github.com/user-attachments/assets/69820796-f96d-44e2-b0c4-0dbd94a06e34)
 
+<a href="https://www.buymeacoffee.com/zheffie" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
+
 I was running a bash script to fetch my 'Water-Link' digital water meter readings, and decided to leverage ChatGPT to convert it into a custom integration. It did a decent job, although i'm sure there could be many improvements (both to the original bash scripts, as to the genereated custom integration). Feel free to contribute.
 As Water Link does not expose a proper API, the integration authenticates on ['My Water-Link' customer portal](https://portaaldigitalemeters.water-link.be/), and retrieves the data from there. Note that this may not be very robust, as Water-Link has changed their authentication procedures already a few times. Use this integration at your own discretion.
 Water-Link is only available in Belgium, so no point in using this integration if you are not an existing customer.
@@ -28,3 +30,5 @@ Copy the `custom_components/mijn-waterlink` folder to your `configuration` path 
 |Option| Description  |
 |--|--|
 | update_interval | The interval to fetch the reading from the Portal. Default is set to 2700s (2 hours). Note that the digital water meter only sends an update once a day.  |
+
+<a href="https://www.buymeacoffee.com/zheffie" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
