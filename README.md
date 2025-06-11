@@ -1,4 +1,4 @@
-# Mijn Water-Link Home Assistant custom integration
+# Unofficial 'Mijn Water-Link' Home Assistant Custom Integration
 
 ![image](https://github.com/user-attachments/assets/69820796-f96d-44e2-b0c4-0dbd94a06e34)
 
