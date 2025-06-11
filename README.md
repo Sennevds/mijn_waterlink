@@ -27,4 +27,4 @@ Copy the `custom_components/mijn-waterlink` folder to your `configuration` path 
 
 |Option| Description  |
 |--|--|
-| update_interval | The interval to fetch the reading from the Portal. Default is set two 2700s (2 hours). Note that the digital water meter only sends an update once a day.  |
+| update_interval | The interval to fetch the reading from the Portal. Default is set to 2700s (2 hours). Note that the digital water meter only sends an update once a day.  |
