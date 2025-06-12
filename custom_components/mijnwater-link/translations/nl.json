@@ -1,0 +1,15 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configureer water-link",
+        "data": {
+          "username": "Gebruikersnaam",
+          "password": "Paswoord",
+          "client_id": "Client ID",
+          "meter_id": "Meter ID"
+        }
+      }
+    }
+  }
+}
