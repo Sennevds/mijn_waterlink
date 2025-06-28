@@ -1,12 +1,16 @@
 {
   "domain": "mijn_waterlink",
   "name": "Mijn water-link",
-  "version": "1.0.0",
-  "documentation": "https://github.com/zheffie/mijn_waterlink",
-  "issue_tracker": "https://github.com/zheffie/mijn_waterlink/issues",
-  "dependencies": [],
-  "codeowners": ["@zheffie"],
-  "iot_class": "cloud_polling",
+  "codeowners": [
+    "@zheffie"
+  ],
   "config_flow": true,
-  "requirements": ["requests"]
+  "dependencies": [],
+  "documentation": "https://github.com/zheffie/mijn_waterlink",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/zheffie/mijn_waterlink/issues",
+  "requirements": [
+    "requests"
+  ],
+  "version": "1.0.0"
 }
