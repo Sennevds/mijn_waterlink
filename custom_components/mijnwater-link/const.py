@@ -1,1 +1,1 @@
-DOMAIN = "mijnwater-link"
+DOMAIN = "mijn_waterlink"
