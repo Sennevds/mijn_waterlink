@@ -11,7 +11,8 @@ Water-Link is only available in Antwerp, Belgium, so no point in installing this
 
 This integration will fetch the latest received datapoint from the 'Mijn Water-link' portal. Typically the water meter sends a value every day, but it can happen that it takes a few days as well. This means that the last received datapoint is always a bit outdated, typically anywhere from a few hours to a couple of days.
 
-![image](https://github.com/user-attachments/assets/02f5c7e7-fa33-4fd5-8f06-baad1bc149ec)
+<img width="423"  alt="image" src="https://github.com/user-attachments/assets/12dd6742-10ff-4019-830a-86bae2829834" />
+
 
 ## Installation
 
