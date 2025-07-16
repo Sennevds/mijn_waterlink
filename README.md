@@ -16,7 +16,7 @@ This integration will fetch the latest available datapoint as it is present in t
 | Total consumption | State | The total volume of consumed water (in m3) as measured by the digital water meter |
 | Is Active | Attribute | Whether the meter is active or not (boolena) |
 | Latest reading date | Attribute | The date of last reading |
-| Has flow limitation | Attribute | Whether budget meter is activated or not (boolean) |
+| Has flow limitation | Attribute | Unclear... presumably related to whether the meter is on a budgetting plan or not (boolean) |
 | Is up to date | Attribute | Whether the value is up to date (within a day) (boolean)|
 | Address | Attribute | Address where the meter is installed |
 | Divergent consumption | Attribute | Whether anomalous water consumption (eg. a leak) is detected |
