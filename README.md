@@ -11,11 +11,11 @@ Water-Link is only available in Antwerp, Belgium, so no point in installing this
 
 This integration will fetch the latest available datapoint as it is present in the 'Mijn Water-link' portal. Typically the water meter seems to take a local measurement around midnight, which is send to the portal on the next day around noon (at least on my meter). It happens that the latest measured values are only send or received after a couple of days. This means that the value which is present in the portal (which is in turn read by this integration) is outdated anywhere from 12 hours to a couple of days. 
 
-|Configuration | Type | Description  |
+|Parameter | Type | Description  |
 |--|--|--|
 | Total consumption | State | The total volume of consumed water (in m3) as measured by the digital water meter |
 | Is Active | Attribute | Whether the meter is active or not (boolena) |
-| Latest reading date | The date of last reading |
+| Latest reading date | Attribute | The date of last reading |
 | Has flow limitation | Attribute | Whether budget meter is activated or not (boolean) |
 | Is up to date | Attribute | Whether the value is up to date (within a day) (boolean)|
 | Address | Attribute | Address where the meter is installed |
