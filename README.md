@@ -11,7 +11,24 @@ Water-Link is only available in Antwerp, Belgium, so no point in installing this
 ![image](https://github.com/user-attachments/assets/02f5c7e7-fa33-4fd5-8f06-baad1bc149ec)
 
 # Installation
-Currently this integration is not yet available over HACS, so you will have to manually add it to your Home Assistant instance.
+
+### HACS
+
+Mijn Water Link is available in [HACS][hacs] (Home Assistant Community Store).
+
+Use this link to directly go to the repository in HACS
+
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=zheffie&repository=mijn_waterlink)
+
+_or_
+
+1. Install HACS if you don't have it already
+2. Open HACS in Home Assistant
+3. Search for "Mijn Waterlink"
+4. Click the download button. ⬇️
+
+
+### Manual
 Copy the `custom_components/mijn-waterlink` folder to your `configuration` path and restart Home Assistant. Use the add integration UI to set up your device.
 
 ![image](https://github.com/user-attachments/assets/025b78f2-60b3-4431-8ca5-5c1f484ae6e4)
