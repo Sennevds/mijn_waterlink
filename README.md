@@ -9,7 +9,7 @@ Water-Link is only available in Antwerp, Belgium, so no point in installing this
 
 ## Available Data
 
-This integration will fetch the latest received datapoint from the 'Mijn Water-link' portal. Typically the water meter sends a value every day, but it can happen that it takes a few days as well. This means that the last received datapoint is always a bit outdated, typically anywhere from a few hours to a couple of days.
+This integration will fetch the latest available datapoint as it is present in the 'Mijn Water-link' portal. Typically the water meter takes a local measurement around midnight, which is send to the portal on the next day around noon. This means that the portal value is inherently already outdated. In addition it happens that the latest measured values are only send or received after a couple of days. This means that the value which present in the portal (which is in turn read by this integration) is outdated anywhere from 12 hours to a couple of days.
 
 <img width="423"  alt="image" src="https://github.com/user-attachments/assets/12dd6742-10ff-4019-830a-86bae2829834" />
 
@@ -46,4 +46,4 @@ Copy the `custom_components/mijn-waterlink` folder to your `configuration` path 
 ## Options
 |Option| Description  |
 |--|--|
-| update_interval | The interval to fetch the reading from the Portal. Default is set to 2700s (2 hours). Note that the digital water meter only sends an update once a day, but in some occasions it may take a few days before an update is received  |
+| update_interval | The polling interval to fetch the reading from the Portal. Default is set to 2700s (2 hours). Note that the digital water meter only sends an update once a day |
