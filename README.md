@@ -9,7 +9,19 @@ Water-Link is only available in Antwerp, Belgium, so no point in installing this
 
 ## Available Data
 
-This integration will fetch the latest available datapoint as it is present in the 'Mijn Water-link' portal. Typically the water meter takes a local measurement around midnight, which is send to the portal on the next day around noon. This means that the portal value is inherently already outdated. In addition it happens that the latest measured values are only send or received after a couple of days. This means that the value which present in the portal (which is in turn read by this integration) is outdated anywhere from 12 hours to a couple of days.
+This integration will fetch the latest available datapoint as it is present in the 'Mijn Water-link' portal. Typically the water meter seems to take a local measurement around midnight, which is send to the portal on the next day around noon (at least on my meter). It happens that the latest measured values are only send or received after a couple of days. This means that the value which is present in the portal (which is in turn read by this integration) is outdated anywhere from 12 hours to a couple of days. 
+
+|Configuration | Type | Description  |
+|--|--|--|
+| Total consumption | State | The total volume of consumed water (in m3) as measured by the digital water meter |
+| Is Active | Attribute | Whether the meter is active or not (boolena) |
+| Latest reading date | The date of last reading |
+| Has flow limitation | Attribute | Whether budget meter is activated or not (boolean) |
+| Is up to date | Attribute | Whether the value is up to date (within a day) (boolean)|
+| Address | Attribute | Address where the meter is installed |
+| Divergent consumption | Attribute | Whether anomalous water consumption (eg. a leak) is detected |
+| Days offset | Attribute | How old the last reading is (in days) |
+| No data permission | Attribute  | Unclear... presumably related to GDPR and/or whether a customer is entitled to see the measured values or not. |
 
 <img width="423"  alt="image" src="https://github.com/user-attachments/assets/12dd6742-10ff-4019-830a-86bae2829834" />
 
