@@ -2,25 +2,23 @@
 
 ![image](https://github.com/user-attachments/assets/69820796-f96d-44e2-b0c4-0dbd94a06e34)
 
-
-I was running a bash script to fetch my 'Water-Link' digital water meter readings, and decided to leverage ChatGPT to convert it into a custom integration. It did a decent job, although i'm sure there could be many improvements (both to the original bash scripts, as to the genereated custom integration). Feel free to contribute.
-As Water Link does not expose a proper API, the integration authenticates on ['Mijn Water-link' customer portal](https://portaaldigitalemeters.water-link.be/), and retrieves the data from there. Note that this may not be very robust, as Water-Link has changed their authentication procedures already a few times. Use this integration at your own discretion.
+As Water Link does not expose a proper API, this integration authenticates on ['Mijn Water-link' customer portal](https://portaaldigitalemeters.water-link.be/) using OAuth, and scrapes the water consumption data from there. This may not be very robust, as Water-Link has changed their authentication procedures already a few times. Use this integration at your own discretion.
 Water-Link is only available in Antwerp, Belgium, so no point in installing this integration if you are not an existing customer.
 
 ## Available Data
 
-This integration will fetch the latest available datapoint as it is present in the 'Mijn Water-link' portal. Typically the water meter seems to take a local measurement around midnight, which is send to the portal on the next day around noon (at least on my meter). It happens that the latest measured values are only send or received after a couple of days. This means that the value which is present in the portal (which is in turn read by this integration) is outdated anywhere from 12 hours to a couple of days. 
+This integration will fetch the latest available datapoint as it is present in the 'Mijn Water-link' portal. Typically the water meter seems to take a local measurement around midnight, which is send to the portal the next day around noon (at least on my meter). It can happen that the latest measured values are only send or received after a couple of days. This means that the value which is present in the portal (which is in turn read by this integration) is outdated anywhere from 12 hours to a couple of days. 
 
 |Parameter | Type | Description  |
 |--|--|--|
 | Total consumption | State | The total volume of consumed water (in m3) as measured by the digital water meter |
-| Is Active | Attribute | Whether the meter is active or not (boolena) |
+| Is Active | Attribute | Whether the meter is active or not (boolean) |
 | Latest reading date | Attribute | The date of last reading |
 | Has flow limitation | Attribute | Unclear... presumably related to whether the meter is on a budgetting plan or not (boolean) |
 | Is up to date | Attribute | Whether the value is up to date (within a day) (boolean)|
 | Address | Attribute | Address where the meter is installed |
 | Divergent consumption | Attribute | Whether anomalous water consumption (eg. a leak) is detected |
-| Days offset | Attribute | How old the last reading is (in days) |
+| Days offset | Attribute | How old the last reading is (in days). Set to '1' for a 'recent' measurement. |
 | No data permission | Attribute  | Unclear... presumably related to GDPR and/or whether a customer is entitled to see the measured values or not. |
 
 <img width="423"  alt="image" src="https://github.com/user-attachments/assets/12dd6742-10ff-4019-830a-86bae2829834" />
