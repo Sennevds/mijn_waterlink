@@ -111,3 +111,12 @@ class WaterlinkClient:
         resp = self.session.get(url, headers=headers)
         resp.raise_for_status()
         return resp.json()
+    def get_notifications(self):
+        headers = {
+            "Authorization": f"Bearer {self.token}",
+            "User-Agent": "Mozilla/5.0"
+        }
+        url = f"https://portaaldigitalemeters.water-link.be/api/alarms/{self.meter_id}?index=0&size=10&sortingDirection=Desc&sortBy=StartTime"
+        resp = self.session.get(url, headers=headers)
+        resp.raise_for_status()
+        return resp.json()

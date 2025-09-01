@@ -37,7 +37,10 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
             data = await hass.async_add_executor_job(client.get_meter_data)
             if not isinstance(data, dict):
                 raise UpdateFailed("Waterlink API did not return a dict")
-            return data
+            notifications = await hass.async_add_executor_job(client.get_notifications)
+            if not isinstance(notifications, dict):
+                raise UpdateFailed("Waterlink API did not return a dict")
+            return (data, notifications)
         except Exception as err:
             raise UpdateFailed(f"Waterlink API error: {err}")
 
@@ -67,6 +70,37 @@ class WaterlinkSensor(CoordinatorEntity, SensorEntity):
         self._attr_native_unit_of_measurement = unit
         self._attr_device_class = SensorDeviceClass.WATER
         self._attr_state_class = SensorStateClass.TOTAL_INCREASING
+
+    @property
+    def native_value(self):
+        reading = self.coordinator.data.get("meterReading")
+        if reading:
+            try:
+                return float(reading.replace(",", "."))
+            except ValueError:
+                _LOGGER.warning("Invalid reading format: %s", reading)
+        return None
+
+    @property
+    def extra_state_attributes(self):
+        data = self.coordinator.data
+        return {
+            "is_active": data.get("isActive"),
+            "latest_reading_date": data.get("latestMeterReading"),
+            "has_flow_limitation": data.get("hasFlowLimitation"),
+            "is_up_to_date": data.get("isUpToDate"),
+            "address": data.get("address"),
+            "divergent_consumption": data.get("divergentConsumption"),
+            "days_offset": data.get("daysOffset"),
+            "no_data_permission": data.get("noDataPermission")
+        }
+        
+class WaterlinkNotificationSensor(CoordinatorEntity, SensorEntity):
+    def __init__(self, coordinator, name, unit):
+        super().__init__(coordinator)
+        self._attr_name = name
+        self._attr_unique_id = f"{name.replace(' ', '_').lower()}"
+        
 
     @property
     def native_value(self):
